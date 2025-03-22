@@ -32,6 +32,10 @@ main {
     height: 100svh;
 }
 
+.hits-number {
+    font-weight: 500;
+}
+
 section {
     text-align: center;
     display: flex;

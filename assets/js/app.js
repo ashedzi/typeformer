@@ -10,13 +10,10 @@ const typedWord = document.querySelector('.user-input');
 const bgMusic = new Audio('./assets/media/background.wav');
 bgMusic.type = 'audio/wav';
 bgMusic.loop = true;
-
 const gameOverSound = new Audio('./assets/media/game over.mp3');
 gameOverSound.type = 'audio/mp3';
-
 const correct = new Audio('./assets/media/correct.mp3');
 correct.type = 'audio/mp3';
-
 const words = [
     'dinosaur', 'love', 'pineapple', 'calendar', 'robot', 'building', 'weather',
     'bottle', 'history', 'dream', 'character', 'money', 'absolute', 'machine',
@@ -53,7 +50,6 @@ let timeCount = 99;
 let count = 0;
 let gameStarted = false;
 let timeInterval;
-
 let wordList = [...words.sort(() => Math.random() - 0.5)];
 
 typedWord.disabled = true;
@@ -127,8 +123,8 @@ class Score {
     #hits;
     #percentage;
 
-    constructor (date, hits, percentage) {
-        this.#date = date;
+    constructor (hits, percentage) {
+        this.#date = Date.now();
         this.#hits = hits;
         this.#percentage = percentage; 
     }
@@ -140,7 +136,7 @@ class Score {
             day: '2-digit'
         }
     
-        return new Date().toLocaleDateString('en-ca', options);
+        return new Date(this.#date).toLocaleDateString('en-ca', options);
     }
 
     get hits() {
