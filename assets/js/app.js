@@ -5,9 +5,11 @@ const restartGame = document.querySelector('.restart-game');
 const numberOfHits = document.querySelector('.hits-number p');
 const timer = document.querySelector('.timer p');
 const randomWords = document.querySelector('.random-words h2');
+const alert = document.querySelector('.press');
 const typedWord = document.querySelector('.user-input');
 const bgMusic = new Audio('./assets/media/background.wav');
 bgMusic.type = 'audio/wav';
+bgMusic.loop = true;
 
 const gameOverSound = new Audio('./assets/media/game over.mp3');
 gameOverSound.type = 'audio/mp3';
@@ -63,6 +65,18 @@ function setTime() {
         let secondsTimer = timeCount.toString().padStart(2, '0');
         timer.textContent = `${secondsTimer}`;
         timeCount--;
+
+        if (timeCount === 5) {
+            let blinkCount = 0;
+            let blinkInterval = setInterval(() => {
+                timer.style.visibility = timer.style.visibility === 'hidden' ? 'visible' : 'hidden';
+                blinkCount++;
+                if (blinkCount >= 10) {
+                    clearInterval(blinkInterval);
+                    timer.style.visibility = 'visible';
+                }
+            }, 500);
+        }
 
         if(timeCount < 0) {
             clearInterval(timeInterval);
@@ -138,25 +152,6 @@ class Score {
     }
 }
 
-function handleLetterSnap() {
-    const displayedWord = randomWords.textContent.trim();
-    const userInput = typedWord.value.trim();
-
-    const lastDisplayedLetter = displayedWord[userInput.length - 1];
-    const lastTypedLetter = userInput[userInput.length - 1];
-
-    if (lastDisplayedLetter === lastTypedLetter) {
-        const letterSpan = document.createElement('span');
-        letterSpan.textContent = lastTypedLetter;
-        letterSpan.classList.add('typing-letter');
-        randomWords.innerHTML = randomWords.innerHTML.replace(lastDisplayedLetter, letterSpan.outerHTML);
-
-        setTimeout(() => {
-            letterSpan.classList.add('snap');
-        }, 50);
-    }
-}
-
 const text = "Typeformers";
 const typingElement = document.querySelector('.typing-text');
 
@@ -179,19 +174,23 @@ startGame.addEventListener('click', () => {
     validateHits();
     startGame.style.display = 'none';
     restartGame.style.visibility = 'visible';
+    alert.textContent = 'Press restart to start again';
     setTimeout(() => {
         randomWords.textContent = getNextWord();
         validateHits();
     }, 1000); 
     setTime();
-    bgMusic.play()
+    bgMusic.play();
 });
 
 restartGame.addEventListener('click',() => {
     timeCount = 99;
     count = 0;
+    bgMusic.currentTime = 0;
+    bgMusic.play();
     timer.textContent = '...';
-    numberOfHits.textContent = `Hits: ${count}`
+    numberOfHits.textContent = `Hits: ${count}`;
+    randomWords.style.color = '#000';
     randomWords.textContent = "Loading...";
     typedWord.disabled = false;
     typedWord.style.cursor = 'text';
@@ -199,6 +198,7 @@ restartGame.addEventListener('click',() => {
     typedWord.value ='';
     startGame.style.display = 'none';
     restartGame.style.visibility = 'visible';
+    alert.textContent = 'Press restart to start again';
     setTimeout(() => {
         randomWords.textContent = getNextWord();
         validateHits();
