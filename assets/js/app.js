@@ -1,12 +1,16 @@
 'use strict';
 
-const startGame = document.querySelector('.start-game');
-const restartGame = document.querySelector('.restart-game');
-const numberOfHits = document.querySelector('.hits-number p');
-const timer = document.querySelector('.timer p');
-const randomWords = document.querySelector('.random-words h2');
-const alert = document.querySelector('.press');
-const typedWord = document.querySelector('.user-input');
+import * as utils from './utils.js';
+import wordList from './words.js';
+import {Score} from './Score.js';
+
+const startGame = select('.start-game');
+const restartGame = utils.select('.restart-game');
+const numberOfHits = select('.hits-number p');
+const timer = select('.timer p');
+const randomWords = select('.random-words h2');
+const alert = select('.press');
+const typedWord = select('.user-input');
 const bgMusic = new Audio('./assets/media/background.wav');
 bgMusic.type = 'audio/wav';
 bgMusic.loop = true;
@@ -14,37 +18,7 @@ const gameOverSound = new Audio('./assets/media/game over.mp3');
 gameOverSound.type = 'audio/mp3';
 const correct = new Audio('./assets/media/correct.mp3');
 correct.type = 'audio/mp3';
-const words = [
-    'dinosaur', 'love', 'pineapple', 'calendar', 'robot', 'building', 'weather',
-    'bottle', 'history', 'dream', 'character', 'money', 'absolute', 'machine',
-    'accurate', 'rainbow', 'bicycle', 'eclipse', 'trouble', 'developer',
-    'database', 'periodic', 'fortune', 'phone', 'future', 'pasta', 'microwave',
-    'jungle', 'wallet', 'canada', 'velvet', 'potion', 'treasure', 'beacon',
-    'whisper', 'breeze', 'coffee', 'beauty', 'agency', 'chocolate', 'eleven',
-    'alphabet', 'magician', 'triangle', 'baseball', 'beyond', 'banana', 'perfume',
-    'computer', 'butterfly', 'music', 'eagle', 'crown', 'chess', 'laptop',
-    'bedroom', 'enemy', 'button', 'door', 'bird', 'superman', 'library',
-    'bookstore', 'language', 'homework', 'beach', 'economy', 'awesome',
-    'science', 'mystery', 'famous', 'league', 'memory', 'leather', 'planet',
-    'software', 'update', 'yellow', 'keyboard', 'window', 'beans', 'truck',
-    'sheep', 'blossom', 'secret', 'wonder', 'destiny', 'quest', 'download',
-    'blue', 'actor', 'desk', 'watch', 'giraffe', 'brazil', 'audio', 'school',
-    'detective', 'hero', 'progress', 'winter', 'passion', 'rebel', 'amber',
-    'jacket', 'article', 'paradox', 'social', 'resort', 'mask', 'escape',
-    'promise', 'band', 'level', 'hope', 'moonlight', 'media', 'orchestra',
-    'volcano', 'guitar', 'raindrop', 'diamond', 'illusion', 'firefly', 'ocean',
-    'cascade', 'journey', 'laughter', 'horizon', 'marvel', 'compiler', 'twilight',
-    'harmony', 'symphony', 'solitude', 'essence', 'forest', 'melody',
-    'vision', 'silence', 'eternity', 'embrace', 'poet', 'ricochet', 'mountain',
-    'dance', 'sunrise', 'dragon', 'adventure', 'galaxy', 'echo', 'fantasy',
-    'radiant', 'mermaid', 'legend', 'monitor', 'plastic', 'pressure', 'bread',
-    'cake', 'caramel', 'juice', 'mouse', 'charger', 'pillow', 'candle', 'sunset',
-    'farmer', 'garden', 'whistle', 'blanket', 'picnic', 'sweater', 'lantern',
-    'theater', 'traffic', 'website', 'courage', 'shelter', 'painter', 'twinkle',
-    'squeeze', 'forever', 'stadium', 'gourmet', 'flower', 'bravery', 'playful',
-    'captain', 'vibrant', 'damage', 'outlet', 'general', 'batman', 'enigma',
-    'storm', 'universe', 'engine', 'mistake', 'hurricane'
-]   
+const testScore = new Score();
 
 let timeCount = 99;
 let count = 0;
@@ -110,6 +84,8 @@ function validateHits() {
     }
 }
 
+const newScore = {Score}
+
 function clearInput() {
     typedWord.value = '';
 }
@@ -118,35 +94,6 @@ typedWord.addEventListener('input', () => {
     validateHits();
 });
 
-class Score {
-    #date;
-    #hits;
-    #percentage;
-
-    constructor (hits, percentage) {
-        this.#date = Date.now();
-        this.#hits = hits;
-        this.#percentage = percentage; 
-    }
-
-    get date() {
-        const options = {
-            year: 'numeric',
-            month: 'short',
-            day: '2-digit'
-        }
-    
-        return new Date(this.#date).toLocaleDateString('en-ca', options);
-    }
-
-    get hits() {
-        return this.#hits;
-    }
-
-    get percentage() {
-        return this.#percentage;
-    }
-}
 
 const text = "Typeformers";
 const typingElement = document.querySelector('.typing-text');
