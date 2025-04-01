@@ -1,16 +1,16 @@
 'use strict';
 
 import * as utils from './utils.js';
-import wordList from './words.js';
-import {Score} from './Score.js';
+import words from './words.js';
+import Score from './Score.js';
 
-const startGame = select('.start-game');
+const startGame = utils.select('.start-game');
 const restartGame = utils.select('.restart-game');
-const numberOfHits = select('.hits-number p');
-const timer = select('.timer p');
-const randomWords = select('.random-words h2');
-const alert = select('.press');
-const typedWord = select('.user-input');
+const numberOfHits = utils.select('.hits-number p');
+const timer = utils.select('.timer p');
+const randomWords = utils.select('.random-words h2');
+const alert = utils.select('.press');
+const typedWord = utils.select('.user-input');
 const bgMusic = new Audio('./assets/media/background.wav');
 bgMusic.type = 'audio/wav';
 bgMusic.loop = true;
@@ -84,19 +84,17 @@ function validateHits() {
     }
 }
 
-const newScore = {Score}
-
 function clearInput() {
     typedWord.value = '';
 }
 
-typedWord.addEventListener('input', () => {
+utils.listen('input', typedWord, () => {
     validateHits();
 });
 
 
 const text = "Typeformers";
-const typingElement = document.querySelector('.typing-text');
+const typingElement = utils.select('.typing-text');
 
 let index = 0;
 function typeText() {
@@ -109,7 +107,8 @@ function typeText() {
 
 window.onload = typeText();
 
-startGame.addEventListener('click', () => {
+utils.listen('click', startGame, () => {
+    // gameStarted = true;
     typedWord.disabled = false;
     typedWord.style.cursor = 'text';
     typedWord.focus();
@@ -126,7 +125,7 @@ startGame.addEventListener('click', () => {
     bgMusic.play();
 });
 
-restartGame.addEventListener('click',() => {
+utils.listen('click',restartGame, () => {
     timeCount = 99;
     count = 0;
     bgMusic.currentTime = 0;

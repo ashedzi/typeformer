@@ -1,0 +1,26 @@
+{
+  "name": "game",
+  "version": "2.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "lite-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ashedzi/typeformer.git"
+  },
+  "keywords": [],
+  "author": "Ashedzi Solomon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ashedzi/typeformer/issues"
+  },
+  "homepage": "https://github.com/ashedzi/typeformer#readme",
+  "description": "",
+  "devDependencies": {
+    "lite-server": "^2.6.1",
+    "live-server": "^1.2.2"
+  }
+}
