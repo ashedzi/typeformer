@@ -105,12 +105,46 @@ input[type=text] {
 }
 
 .score-board {
+    padding: 40px 12px;
     height: auto;
     position: fixed;
     right: 0;
     top: 100px;
+    background-color: #3EC5DB;
+    color: #1A235A;
+
+    h3 {
+        color: #BEFAF2;
+    }
 }
 
 th, td {
     padding: 12px
 }
+
+th, td {
+    font-size: 1.4rem
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #12B0CA;
+}
+
+.trophy {
+    font-size: 24px;
+    color: #BEFAF2;
+}
+
+tr th:nth-child(2), .hits {
+    color: #8D0E3D;
+}
+
+
+  /* tbody tr {
+    border-radius: 4px;
+  } */
+
+  /* table {
+    border-collapse: separate;
+    border-spacing: 0 10px; /* 0 for columns, 10px for rows */
+  
