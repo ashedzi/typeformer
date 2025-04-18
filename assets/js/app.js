@@ -63,16 +63,9 @@ function gameOver() {
     randomWords.textContent = "Game Over!";
     randomWords.style.color = '#8D0E3D';
     gameOverSound.play();
-
     const accuracyPercentage = (count / wordList.length) * 100;
-
-    // Create a new Score object
     const score = new Score(count, accuracyPercentage, new Date().toLocaleString());
-
-    // Save the score
     saveScore(score);
-
-    // Update the scoreboard
     updateScoreboardDisplay();
 }
 
@@ -99,7 +92,6 @@ function clearInput() {
     typedWord.value = '';
 }
 
-
 const rawScores = JSON.parse(localStorage.getItem('scoreHistory')) || [];
 const validScores = rawScores.filter(score => score && score.hits !== undefined && score.percentage !== undefined);
 localStorage.setItem('scoreHistory', JSON.stringify(validScores));
@@ -107,67 +99,53 @@ localStorage.setItem('scoreHistory', JSON.stringify(validScores));
 function saveScore(score) {
     let scores = JSON.parse(localStorage.getItem('scoreHistory')) || [];
 
-    // Convert the Score object to a plain object (as localStorage cannot store class instances directly)
+    // I converted the Score object to a plain object (as localStorage cannot store class instances directly)
     const plainScore = {
         hits: score.hits,
         percentage: score.percentage,
         date: score.date
     };
 
-    // Add new score to the list
     scores.push(plainScore);
-
-    // Sort scores by hits (descending)
     scores.sort((a, b) => b.hits - a.hits);
-
-    // Keep only the top 9 scores
     scores = scores.slice(0, 9);
-
-    // Save back to localStorage
+    // I stringified the scores array and stored it in localStorage (localStorage only accepts string values).
     localStorage.setItem('scoreHistory', JSON.stringify(scores));
 }
 
 function updateScoreboardDisplay() {
     const scoreboardBody = utils.select('.scoreboard-body');
     const scoreHistory = JSON.parse(localStorage.getItem('scoreHistory')) || [];
-
     scoreboardBody.innerHTML = '';
 
     scoreHistory.forEach((score, index) => {
-        const row = document.createElement('tr');
+        const row = utils.create('tr');
 
-        const rankCell = document.createElement('td');
+        const rankCell = utils.create('td');
         rankCell.textContent = index + 1;
 
-        const hitsCell = document.createElement('td');
+        const hitsCell = utils.create('td');
         hitsCell.textContent = score.hits ?? '0';
 
-        const percentageCell = document.createElement('td');
-        // Check if percentage exists and is a number
-        const safePercentage = typeof score.percentage === 'number' ? score.percentage.toFixed(2) : '0.00';
-        percentageCell.textContent = safePercentage;
+        const percentageCell = utils.create('td');
+        const safePercentage = typeof score.percentage === 'number' ? score.percentage.toFixed(0) : '0.00';
+        percentageCell.textContent = `${safePercentage}%`;
 
-        const dateCell = document.createElement('td');
+        const dateCell = utils.create('td');
         dateCell.textContent = score.date ?? 'N/A';
 
-        row.appendChild(rankCell);
-        row.appendChild(hitsCell);
-        row.appendChild(percentageCell);
-        row.appendChild(dateCell);
+        row.append(rankCell);
+        row.append(hitsCell);
+        row.append(percentageCell);
+        row.append(dateCell);
 
-        scoreboardBody.appendChild(row);
+        scoreboardBody.append(row);
     });
 }
-
-
-
-
-
 
 utils.listen('input', typedWord, () => {
     validateHits();
 });
-
 
 const text = "Typeformers";
 const typingElement = utils.select('.typing-text');
@@ -184,10 +162,9 @@ function typeText() {
 window.onload = () => {
     typeText();
     updateScoreboardDisplay();
-    }
+}
 
 utils.listen('click', startGame, () => {
-    // gameStarted = true;
     typedWord.disabled = false;
     typedWord.style.cursor = 'text';
     typedWord.focus();
@@ -226,155 +203,3 @@ utils.listen('click',restartGame, () => {
     }, 1000); 
     setTime();
 });
-
-// export function create(element) {
-//     return document.createElement(element);
-// }
-
-
-
-// // 1. Load previous scores from localStorage or initialize an empty array
-// let scoreHistory = JSON.parse(localStorage.getItem('scoreHistory')) || [];
-
-// // 2. Create a new score object using your Score class
-// const finalScore = new Score(hits, accuracyPercentage);
-
-// // 3. Add the new score to the array
-// scoreHistory.push(finalScore);
-
-// // 4. Sort the array by hits in descending order
-// scoreHistory.sort((a, b) => b.hits - a.hits);
-
-// // 5. Keep only the top 9 scores
-// scoreHistory = scoreHistory.slice(0, 9);
-
-// // 6. Save updated scores to localStorage
-// localStorage.setItem('scoreHistory', JSON.stringify(scoreHistory));
-
-// // 7. Update the scoreboard on screen
-// function updateScoreboardDisplay() {
-//   const scoreboard = document.querySelector('.scoreboard-body');
-//   scoreboard.innerHTML = '';
-
-//   scoreHistory.forEach(score => {
-//     const row = document.createElement('tr');
-//     row.innerHTML = `
-//       <td>${typeof score.date === 'function' ? score.date() : new Date(score.#date).toLocaleDateString('en-ca')}</td>
-//       <td>${score.hits}</td>
-//       <td>${score.percentage}%</td>
-//     `;
-//     scoreboard.appendChild(row);
-//   });
-// }
-
-// updateScoreboardDisplay(); // Call it after setting localStorage
-
-
-
-// function createElements(tags, attributes = {}, textContent = '') {
-//     const element = utils.create(tags);
-
-//     for (const key in attributes) {
-//         if (Array.isArray(attributes[key])) {
-//             element.setAttribute(key, attributes[key].join(' '));
-//         } else {
-//             element.setAttribute(key, attributes[key]);
-//         }
-//     }
-
-//     if (textContent) element.textContent = textContent;
-
-//     return element;
-// }
-
-
-// const scoreHistory = [];
-
-// const finalScore = new Score(hits, accuracyPercentage);
-// scoreHistory.push(finalScore);
-// localStorage.setItem('scoreHistory', JSON.stringify(scoreHistory));
-
-// function updateScoreboardDisplay() {
-//     const scoreboard = document.querySelector('.scoreboard-body');
-//     scoreboard.innerHTML = ''; // clear previous content
-
-//     scoreHistory.forEach(score => {
-//         const row = document.createElement('tr');
-//         row.innerHTML = `
-//             <td>${score.date}</td>
-//             <td>${score.hits}</td>
-//             <td>${score.percentage}%</td>
-//         `;
-//         scoreboard.appendChild(row);
-//     });
-// }
-
-// localStorage.setItem('scoreHistory', JSON.stringify(scoreHistory));
-
-// // Load
-// const storedScores = JSON.parse(localStorage.getItem('scoreHistory')) || [];
-// scoreHistory.sort((a, b) => b.hits - a.hits);
-// const topScores = scoreHistory.slice(0, 9);
-// topScores.forEach(score => {
-//   // Display in scoreboard
-// });
-
-// scoreHistory.sort((a, b) => b.hits - a.hits);
-// const trimmed = scoreHistory.slice(0, 9);
-// localStorage.setItem('scoreHistory', JSON.stringify(trimmed));
-
-
-
-
-
-
-// const storedScores = JSON.parse(localStorage.getItem('scoreHistory')) || [];
-// const scoreHistory = storedScores.map(s => new Score(s.hits, s.percentage));
-// updateScoreboardDisplay();
-
-// function createScore() {
-//     const scoreBoard = utils.create('section', {class: 'score-board'});
-//     const table = utils.create('table', {class: ''});
-//     const tableHead = utils.create('thead', {class: ''});
-//     const tableRowHead = utils.create('tr', {class: ''});
-//     const rank = utils.create('th', {class: ''});
-//     const hits = utils.create('th', {class: ''});
-//     const percentage = utils.create('th', {class: ''});
-//     const date = utils.create('th', {class: ''});
-//     const tableBody = utils.create('tbody', {class: ''});
-//     const tableRowBody = utils.create('tr', {class: ''});
-//     const tdRank = utils.create('td', {class: 'rank'});
-//     const tdHits = utils.create('td', {class: 'hits'});
-//     const tdPercentage = utils.create('td', {class: 'percentage'});
-//     const tdDate = utils.create('td', {class: 'date'});
-
-//     scoreBoard.append(table);
-//     table.append(tableHead, tableBody);
-//     tableHead.append(tableRowHead);
-//     tableRowHead.append(rank, hits, percentage, date);
-//     tableBody.append(tableRowBody);
-//     tableRowBody.append(tdRank, tdHits, tdPercentage, tdDate);
-//     return table;
-// }
-
-
-// function clearPost() {
-//     textDraft.value = '';
-//     fileInput.value = '';
-//     fileName.textContent = '';
-// }
-
-// // Local storage 
-
-// // saving/setting values into the localStorage 
-// localStorage.setItem('user', 'Ashedzi');
-// localStorage.setItem('email', 'solomonashe84@gmail.com');
-
-// // Reading the values from the local storage 
-// // localStorage.getItem('user');
-// // localStorage.getItem('email');
-
-// console.log(`Username: ${localStorage.getItem('user')}`);
-// console.log(`Email: ${localStorage.getItem('email')}`);
-
-// console.log(localStorage);

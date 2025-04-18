@@ -119,11 +119,16 @@ input[type=text] {
 }
 
 th, td {
-    padding: 12px
+    padding: 12px;
 }
 
-th, td {
-    font-size: 1.4rem
+th {
+    font-size: 1.4rem;
+}
+
+td {
+    font-size: 1.2rem;
+    color: #000;
 }
 
 tbody tr:nth-child(odd) {
@@ -135,16 +140,6 @@ tbody tr:nth-child(odd) {
     color: #BEFAF2;
 }
 
-tr th:nth-child(2), .hits {
+tr td:nth-child(2), .hits {
     color: #8D0E3D;
 }
-
-
-  /* tbody tr {
-    border-radius: 4px;
-  } */
-
-  /* table {
-    border-collapse: separate;
-    border-spacing: 0 10px; /* 0 for columns, 10px for rows */
-  
